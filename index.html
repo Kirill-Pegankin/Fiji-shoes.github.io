@@ -115,7 +115,7 @@
       backdrop-filter: blur(10px);
       transition: 0.3s;
       cursor: pointer;
-      display: block; /* Make anchor behave like a block card */
+      display: block;
       color: white;
       text-decoration: none;
     }
@@ -182,6 +182,42 @@
       color: #222;
     }
 
+    /* Rickroll overlay */
+    #rickroll {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    #rickroll iframe {
+      width: 80%;
+      height: 80%;
+      border: none;
+      border-radius: 10px;
+    }
+
+    #closeBtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #ffdd59;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #closeBtn:hover {
+      background: #ffc048;
+    }
+
     /* Animations */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-30px); }
@@ -219,23 +255,23 @@
   <section class="products" id="products">
     <h2>Our Collection</h2>
     <div class="card-container">
-      <a href="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" target="_blank" class="card">
+      <div class="card">
         <img src="IMG_1706.jpeg" alt="Ocean Breeze Fiji Shoe">
         <h3>Ocean Breeze</h3>
         <p>$79.99</p>
-      </a>
+      </div>
 
-      <a href="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" target="_blank" class="card">
+      <div class="card">
         <img src="IMG_1707.jpeg" alt="Island Runner Fiji Shoe">
         <h3>Island Runner</h3>
         <p>$89.99</p>
-      </a>
+      </div>
 
-      <a href="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" target="_blank" class="card">
+      <div class="card">
         <img src="IMG_1708.jpeg" alt="Tropical Flow Fiji Shoe">
         <h3>Tropical Flow</h3>
         <p>$99.99</p>
-      </a>
+      </div>
     </div>
 
     <div class="carousel">
@@ -251,7 +287,18 @@
     </div>
   </section>
 
+  <!-- Rickroll overlay -->
+  <div id="rickroll">
+    <button id="closeBtn">Close ✖</button>
+    <iframe 
+      src="" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
   <script>
+    // Carousel logic
     const track = document.querySelector('.carousel-track');
     const slides = Array.from(track.children);
     const nextBtn = document.getElementById('next');
@@ -270,6 +317,24 @@
     prevBtn.addEventListener('click', () => {
       index = (index - 1 + slides.length) % slides.length;
       updateCarousel();
+    });
+
+    // Rickroll logic
+    const cards = document.querySelectorAll('.card');
+    const modal = document.getElementById('rickroll');
+    const iframe = modal.querySelector('iframe');
+    const closeBtn = document.getElementById('closeBtn');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+        modal.style.display = "flex";
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      iframe.src = "";
+      modal.style.display = "none";
     });
   </script>
 
