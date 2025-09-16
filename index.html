@@ -179,6 +179,28 @@
       color: #222;
     }
 
+    /* Video container */
+    #video-container {
+      display: none;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #close-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #ff4757;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #close-btn:hover {
+      background: #e84118;
+    }
+
     /* Animations */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-30px); }
@@ -216,20 +238,18 @@
   <section class="products" id="products">
     <h2>Our Collection</h2>
     <div class="card-container">
-      <!-- First card triggers Rickroll -->
+      <!-- All cards trigger Rickroll -->
       <div class="card" onclick="playRickroll()">
         <img src="IMG_1706.jpeg" alt="Fiji Shoe">
         <h3>Ocean Breeze</h3>
         <p>$79.99</p>
       </div>
-
-      <!-- Other cards normal -->
-      <div class="card">
+      <div class="card" onclick="playRickroll()">
         <img src="IMG_1707.jpeg" alt="Fiji Shoe">
         <h3>Island Runner</h3>
         <p>$89.99</p>
       </div>
-      <div class="card">
+      <div class="card" onclick="playRickroll()">
         <img src="IMG_1708.jpeg" alt="Fiji Shoe">
         <h3>Tropical Flow</h3>
         <p>$99.99</p>
@@ -237,11 +257,13 @@
     </div>
 
     <!-- Hidden Rickroll video -->
-    <div id="video-container" style="display:none; text-align:center; margin-top:40px;">
+    <div id="video-container">
       <video id="rickroll" width="640" controls>
         <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) 2.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+      <br>
+      <button id="close-btn" onclick="closeRickroll()">Close Video</button>
     </div>
 
     <div class="carousel">
@@ -285,8 +307,18 @@
       const video = document.getElementById('rickroll');
 
       container.style.display = "block"; // show video
+      video.currentTime = 0; // restart if played before
       video.play(); // start playing
       window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+    }
+
+    function closeRickroll() {
+      const container = document.getElementById('video-container');
+      const video = document.getElementById('rickroll');
+
+      video.pause(); // stop video
+      video.currentTime = 0; // reset
+      container.style.display = "none"; // hide
     }
   </script>
 
