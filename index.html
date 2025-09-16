@@ -115,9 +115,6 @@
       backdrop-filter: blur(10px);
       transition: 0.3s;
       cursor: pointer;
-      display: block;
-      text-decoration: none;
-      color: inherit;
     }
 
     .card:hover {
@@ -197,25 +194,6 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
     }
-
-    /* Rickroll modal */
-    #rickroll-modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #rickroll-modal video {
-      width: 80%;
-      max-width: 900px;
-      border-radius: 10px;
-    }
   </style>
 </head>
 <body>
@@ -238,21 +216,32 @@
   <section class="products" id="products">
     <h2>Our Collection</h2>
     <div class="card-container">
-      <div class="card">
-        <img src="IMG_1706.jpeg" alt="Ocean Breeze Fiji Shoe">
+      <!-- First card triggers Rickroll -->
+      <div class="card" onclick="playRickroll()">
+        <img src="IMG_1706.jpeg" alt="Fiji Shoe">
         <h3>Ocean Breeze</h3>
         <p>$79.99</p>
       </div>
+
+      <!-- Other cards normal -->
       <div class="card">
-        <img src="IMG_1707.jpeg" alt="Island Runner Fiji Shoe">
+        <img src="IMG_1707.jpeg" alt="Fiji Shoe">
         <h3>Island Runner</h3>
         <p>$89.99</p>
       </div>
       <div class="card">
-        <img src="IMG_1708.jpeg" alt="Tropical Flow Fiji Shoe">
+        <img src="IMG_1708.jpeg" alt="Fiji Shoe">
         <h3>Tropical Flow</h3>
         <p>$99.99</p>
       </div>
+    </div>
+
+    <!-- Hidden Rickroll video -->
+    <div id="video-container" style="display:none; text-align:center; margin-top:40px;">
+      <video id="rickroll" width="640" controls>
+        <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) 2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     </div>
 
     <div class="carousel">
@@ -268,16 +257,8 @@
     </div>
   </section>
 
-  <!-- Rickroll modal -->
-  <div id="rickroll-modal">
-    <video id="rickroll-video" controls autoplay>
-      <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) 2.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-
   <script>
-    // Carousel logic
+    // Carousel JS
     const track = document.querySelector('.carousel-track');
     const slides = Array.from(track.children);
     const nextBtn = document.getElementById('next');
@@ -298,25 +279,15 @@
       updateCarousel();
     });
 
-    // Rickroll modal logic
-    const rickrollModal = document.getElementById('rickroll-modal');
-    const rickrollVideo = document.getElementById('rickroll-video');
+    // Rickroll JS
+    function playRickroll() {
+      const container = document.getElementById('video-container');
+      const video = document.getElementById('rickroll');
 
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', e => {
-        e.preventDefault();
-        rickrollModal.style.display = 'flex';
-        rickrollVideo.currentTime = 0;  // restart
-        rickrollVideo.play();
-      });
-    });
-
-    rickrollModal.addEventListener('click', e => {
-      if (e.target === rickrollModal) {
-        rickrollModal.style.display = 'none';
-        rickrollVideo.pause();
-      }
-    });
+      container.style.display = "block"; // show video
+      video.play(); // start playing
+      window.scrollTo({ top: container.offsetTop, behavior: 'smooth' });
+    }
   </script>
 
 </body>
