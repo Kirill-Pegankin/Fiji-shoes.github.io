@@ -116,8 +116,8 @@
       transition: 0.3s;
       cursor: pointer;
       display: block;
-      color: white;
       text-decoration: none;
+      color: inherit;
     }
 
     .card:hover {
@@ -182,42 +182,6 @@
       color: #222;
     }
 
-    /* Rickroll overlay */
-    #rickroll {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    #rickroll iframe {
-      width: 80%;
-      height: 80%;
-      border: none;
-      border-radius: 10px;
-    }
-
-    #closeBtn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #ffdd59;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    #closeBtn:hover {
-      background: #ffc048;
-    }
-
     /* Animations */
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-30px); }
@@ -232,6 +196,25 @@
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); }
+    }
+
+    /* Rickroll modal */
+    #rickroll-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #rickroll-modal video {
+      width: 80%;
+      max-width: 900px;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -260,13 +243,11 @@
         <h3>Ocean Breeze</h3>
         <p>$79.99</p>
       </div>
-
       <div class="card">
         <img src="IMG_1707.jpeg" alt="Island Runner Fiji Shoe">
         <h3>Island Runner</h3>
         <p>$89.99</p>
       </div>
-
       <div class="card">
         <img src="IMG_1708.jpeg" alt="Tropical Flow Fiji Shoe">
         <h3>Tropical Flow</h3>
@@ -287,14 +268,12 @@
     </div>
   </section>
 
-  <!-- Rickroll overlay -->
-  <div id="rickroll">
-    <button id="closeBtn">Close ✖</button>
-    <iframe 
-      src="" 
-      allow="autoplay; encrypted-media" 
-      allowfullscreen>
-    </iframe>
+  <!-- Rickroll modal -->
+  <div id="rickroll-modal">
+    <video id="rickroll-video" controls autoplay>
+      <source src="Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster) 2.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
   </div>
 
   <script>
@@ -319,22 +298,24 @@
       updateCarousel();
     });
 
-    // Rickroll logic
-    const cards = document.querySelectorAll('.card');
-    const modal = document.getElementById('rickroll');
-    const iframe = modal.querySelector('iframe');
-    const closeBtn = document.getElementById('closeBtn');
+    // Rickroll modal logic
+    const rickrollModal = document.getElementById('rickroll-modal');
+    const rickrollVideo = document.getElementById('rickroll-video');
 
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        iframe.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
-        modal.style.display = "flex";
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', e => {
+        e.preventDefault();
+        rickrollModal.style.display = 'flex';
+        rickrollVideo.currentTime = 0;  // restart
+        rickrollVideo.play();
       });
     });
 
-    closeBtn.addEventListener('click', () => {
-      iframe.src = "";
-      modal.style.display = "none";
+    rickrollModal.addEventListener('click', e => {
+      if (e.target === rickrollModal) {
+        rickrollModal.style.display = 'none';
+        rickrollVideo.pause();
+      }
     });
   </script>
 
